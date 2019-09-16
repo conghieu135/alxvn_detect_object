@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+*log*.txt
+
+.vscode
+
+*__pycache__
+face_recognition-master
+log
+migrations
+
+face_unknown/
+image_receive/
+tmp/
+alx_examples/*
+
+
+liveness_img/20190611-0d361fe5-6335-80f1-bf66-4ad25be6b946/5.jpg
+
+liveness_img/*
+model/weights.28-3.73.hdf5
+ios_images/*
+ios_imagesResult/*
