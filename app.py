@@ -117,8 +117,10 @@ def detect_object_func():
       "count": 0
     }
 
+    return jsonify(result)
 
-    message = "There are " + str(len(arr_labels)) + " object " + ("" if len(arr_labels)==1 else "s") +  " in image: "
+
+  message = "There are " + str(len(arr_labels)) + " object " + ("" if len(arr_labels)==1 else "s") +  " in image: "
   
   seperator = ', '
 

@@ -25,6 +25,10 @@ def draw_labels_and_boxes(img, boxes, confidences, classids, idxs, colors, label
             cv.rectangle(img, (x, y), (x+w, y+h), color, 2)
             text = "{}: {:4f}".format(labels[classids[i]], confidences[i])
             
+
+            x = 10 if x < 5 else x
+            y = (y + h) if (y-5) < 0 else (y-5)
+
             cv.putText(img, text, (x, y-5), cv.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
             if labels[classids[i]] not in arr_label:
