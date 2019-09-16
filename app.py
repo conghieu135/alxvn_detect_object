@@ -1,6 +1,6 @@
 
 # from flask import Flask
-from server import (app, jinja2, render_template, request, json, jsonify, datetime,  makeError)
+from server import (app, jinja2, render_template, request, json, jsonify,  makeError)
 
 import os
 import os.path
@@ -12,15 +12,17 @@ import re
 import argparse
 import ssl
 from functools import wraps
-
+from datetime import datetime
 
 from core.logger import logger
 from core.response import handle_error
 
 import ntpath
 
-from core.utils import saveImageIOS, printLog
+from core.utils import saveImageIOS, printLog, saveImage
+from model.detect_object import DETECT_OBJECT 
 
+import base64
 
 # ===========construct the argument parser and parse the arguments===========
 ap = argparse.ArgumentParser()
@@ -59,6 +61,7 @@ createFolder(folderNameImage)
 createFolder(folderNameResultImage)
 # ==========================================================================================
 
+detect_object_obj = DETECT_OBJECT()
 
 
 # =========================================LINK PAGE=========================================
@@ -75,14 +78,13 @@ def catch_exception(func):
 
 
 # =========================================LINK API=========================================
-@app.route('/face_recognition_func/', methods=['POST'])
+@app.route('/detect_object_api/', methods=['POST'])
 @catch_exception
-def face_recognition_func():
+def detect_object_func():
   if not request.json:
     return json.jsonify(
-      username = "",
-      password = "",
-      status = -1
+      status = False,
+      message = "Data is none"
     )
 
   data = request.get_json()
@@ -92,24 +94,44 @@ def face_recognition_func():
     print("request data none")
 
     return json.jsonify(
-      username = "",
-      password = "",
-      status = -1
+      status = False,
+      message = "Data is none"
     )
-  
-  imgstr = re.search(r'base64,(.*)', str(data.get('image_data'))).group(1)   
-  detect =  None
-  fullname = ""
-  token = ""
 
-  if detect.get('status') == 0:
-    print('rwere')
+  imgstr = data.get('image_data')
+  dt = datetime.now()
+  
+  filename = time.strftime('%Y%m%d%H%M%S') + str(dt.microsecond)
+  imgPath = os.getcwd() + "/" + folderNameImage + "/" +  filename + ".jpg"
+
+  saveImage(imgstr, imgPath)
+
+  imgPathResult = os.getcwd() + "/" + folderNameResultImage + "/" +  filename + "_result" + ".jpg"
+  img, arr_labels = detect_object_obj.detect_object(imgPath, imgPathResult)
+  
+
+  if len(arr_labels) < 1:
+    result = {
+      "status": True,
+      "message": "Cannot found object in image.",
+      "count": 0
+    }
+
+
+    message = "There are " + str(len(arr_labels)) + " object " + ("" if len(arr_labels)==1 else "s") +  " in image: "
+  
+  seperator = ', '
+
+  message += seperator.join(arr_labels)
+
+  with open(imgPathResult, "rb") as idol_img_file:
+      base64IdolStr = base64.b64encode(idol_img_file.read()).decode('ascii')
 
   result = {
-    "status": detect.get('status'),
-    "username": detect.get('username'),
-    "fullname": fullname,
-    "token": token
+    "status": True,
+    "message": message,
+    "count": len(arr_labels),
+    "imgResult": base64IdolStr
   }
 
   return jsonify(result)

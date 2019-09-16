@@ -24,3 +24,5 @@ liveness_img/*
 model/weights.28-3.73.hdf5
 ios_images/*
 ios_imagesResult/*
+image_result/
+model/yolov3.weights
