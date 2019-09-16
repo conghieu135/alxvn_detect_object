@@ -4,56 +4,7 @@ link tham khảo: https://medium.com/@onejohi/building-a-simple-rest-api-with-py
 2. set FLASK_ENV=development
 3. set FLASK_APP=app.py
 
-
------install run face_recogition------
-link tham khảo: https://github.com/ageitgey/face_recognition
-1. pip install face_recognition
-2. pip install opencv-python
-
-
-----train model------
-python face_recognition_knn_train.py
-Hiện tại file trained_alx_model.clf sau khi train xong sẽ nằm ở thư mục alx_examples. Vì tránh trường hợp khi trong lúc train ảnh hưởng đến phần detect. ---> sau khi train xong thì copy file trained_alx_model.clf ra ngoài thư mục gốc
-
-
 -----run server-----
 py -m flask run
 
 
-------cài đặt face_recogition-----
-https://github.com/ageitgey/face_recognition/issues/175
-
-
-===================Install package===================
-pip install -r requirements.txt
-
-
-================================= coverage =================================
-coverage run tests.py [File cần run]
-
-coverage report -m
-
-coverage html
-
-================================= comand line run (----manage.py----) =================================
-
-======= Khởi tạo migrations =======
-  python manage.py db init
-
-======= Thực hiện run migrate =======
-  python manage.py db migrate
-
-======= Thực hiện update database =======
-  python manage.py db upgrade
-
-======= Thực hiện tao du lieu users =======
-  python manage.py create_admin
-
-======= Thực hiện drop_db =======
-  python manage.py drop_db
-
-======= Thực hiện run unittest =======
-  python manage.py test
-
-======= Thực hiện run coverage =======
-  python manage.py cov
