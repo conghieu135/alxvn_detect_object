@@ -9,9 +9,14 @@ from model.yolo_util import infer_image, show_image
 class DETECT_OBJECT:
 	def __init__(self):
 
-		label_path= "./model/coco-labels"
-		config_path = "./model/yolov3.cfg"
-		weight_path = "./model/yolov3.weights"
+		# label_path= "./model/coco-labels"
+		# config_path = "./model/yolov3.cfg"
+		# weight_path = "./model/yolov3.weights"
+
+		label_path= "./model/clock-glass-laptop"
+		config_path = "./model/clock_glass_laptop.cfg"
+		weight_path = "./model/clock_glass_laptop_5000.weights"
+
 		self.confidence = 0.5
 		self.threshold = 0.3
 		self.showtime = False
