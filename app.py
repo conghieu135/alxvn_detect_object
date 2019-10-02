@@ -128,7 +128,7 @@ def detect_object_func():
 
   message = "画像には" + str(len(arr_labels)) + "つのオブジェクトがあります："
   
-  seperator = ', '
+  seperator = '。 '
 
   message += seperator.join(arr_labels)
 
