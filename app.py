@@ -24,6 +24,8 @@ from model.detect_object import DETECT_OBJECT
 
 import base64
 
+from core.string_resource import StringResource
+
 # ===========construct the argument parser and parse the arguments===========
 ap = argparse.ArgumentParser()
 
@@ -101,26 +103,30 @@ def detect_object_func():
   imgstr = data.get('image_data')
   dt = datetime.now()
   
+  model = int(data.get('model'))
+
   filename = time.strftime('%Y%m%d%H%M%S') + str(dt.microsecond)
   imgPath = os.getcwd() + "/" + folderNameImage + "/" +  filename + ".jpg"
 
   saveImage(imgstr, imgPath)
 
   imgPathResult = os.getcwd() + "/" + folderNameResultImage + "/" +  filename + "_result" + ".jpg"
-  img, arr_labels = detect_object_obj.detect_object(imgPath, imgPathResult)
+  img, arr_labels = detect_object_obj.detect_object(imgPath, imgPathResult, model)
   
 
   if len(arr_labels) < 1:
     result = {
       "status": True,
-      "message": "Cannot found object in image.",
+      "message": StringResource.MSG_CANNOT_FOUND_OBJECT,
       "count": 0
     }
 
     return jsonify(result)
 
 
-  message = "There are " + str(len(arr_labels)) + " object " + ("" if len(arr_labels)==1 else "s") +  " in image: "
+  # message = "There are " + str(len(arr_labels)) + " object " + ("" if len(arr_labels)==1 else "s") +  " in image: "
+
+  message = "画像には" + str(len(arr_labels)) + "つのオブジェクトがあります："
   
   seperator = ', '
 
@@ -142,6 +148,15 @@ def detect_object_func():
   
 # =========================================INIT MAIN=========================================
 if __name__ == "__main__":
+
+  # imgPath = os.getcwd() + "/" + folderNameImage + "/" +  "20190919092123669510.jpg"
+  # imgPathResult = os.getcwd() + "/" + folderNameResultImage + "/" +  "test" + "_result" + ".jpg"
+  # img, arr_labels = detect_object_obj.detect_object(imgPath, imgPathResult)
+  
+  # cv2.imshow('image',img)
+  # cv2.waitKey(0)
+  # cv2.destroyAllWindows()
+
 
   app.run(host='0.0.0.0', port=8989)
 

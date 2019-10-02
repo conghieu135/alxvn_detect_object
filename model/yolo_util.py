@@ -4,6 +4,9 @@ import cv2 as cv
 import subprocess
 import time
 import os
+from core.string_resource import StringResource
+from PIL import ImageFont, ImageDraw, Image
+import random
 
 def show_image(img):
     cv.imshow("Image", img)
@@ -23,16 +26,31 @@ def draw_labels_and_boxes(img, boxes, confidences, classids, idxs, colors, label
 
             # Draw the bounding box rectangle and label on the image
             cv.rectangle(img, (x, y), (x+w, y+h), color, 5)
-            text = "{}: {:4f}".format(labels[classids[i]], confidences[i])
+
+            label_name = StringResource.OBJECT_NAME_JA.get(labels[classids[i]].replace(" ", "_").lower())
+            # text = "{}: {:4f}".format(labels[classids[i]], confidences[i])
+            text = "{}: {:4f}".format(label_name, confidences[i])
             
 
             x = 10 if x < 5 else x
             y = (y + h) if (y-5) < 0 else (y-5)
 
-            cv.putText(img, text, (x, y-5), cv.FONT_HERSHEY_SIMPLEX, 1.5, color, 4)
+            fontpath ='./font/hgrpp1.ttc'
+            font = ImageFont.truetype(fontpath, 50)
 
-            if labels[classids[i]] not in arr_label:
-                arr_label.append(labels[classids[i]])
+            # cv.putText(img, text, (x, y-5), cv.FONT_HERSHEY_SIMPLEX, 1.5, color, 4)
+            # cv.putText(img, text, (x, y-5), font, 1.5, color, 4)
+
+            img_pil = Image.fromarray(img)
+            draw = ImageDraw.Draw(img_pil)
+            
+            draw.text((x, y+10),  text, font = font, fill = StringResource.TEXT_CORLOR[random.randrange(len(StringResource.TEXT_CORLOR)-1)])
+
+            img = np.array(img_pil)
+
+            if label_name not in arr_label:
+                # label_name = labels[classids[i]].replace(" ", "_").lower()
+                arr_label.append(label_name)
 
     return img, arr_label
 
