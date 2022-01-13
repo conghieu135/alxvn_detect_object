@@ -1,4 +1,4 @@
-Pillow==5.1.0
+Pillow==9.0.0
 absl-py==0.7.0
 click==7.0
 Flask==1.0.2
